@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroByte - Neural DeFi Protocol</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --dark-blue: #040B27;
+            --medium-blue: #162B88;
+            --light-blue: #4F8BFF;
+            --neon-blue: #00FFFF;
+            --accent-purple: #8B5CF6;
+        }
+
+        body {
+            background-color: var(--dark-blue);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-gradient {
+            background: 
+                radial-gradient(60% 60% at 50% 50%, rgba(0, 255, 255, 0.12) 0%, transparent 80%),
+                radial-gradient(70% 70% at 10% 10%, rgba(79, 139, 255, 0.12) 0%, transparent 70%),
+                radial-gradient(45% 45% at 90% 90%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
+                linear-gradient(180deg, var(--dark-blue) 0%, #071442 100%);
+        }
+
+        .tech-grid {
+            background-size: 30px 30px;
+            background-image: 
+                linear-gradient(to right, rgba(79, 139, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(79, 139, 255, 0.05) 1px, transparent 1px);
+            animation: gridFloat 20s infinite linear;
+        }
+
+        @keyframes gridFloat {
+            0% { background-position: 0 0; }
+            100% { background-position: -30px -30px; }
+        }
+
+        .glow-card {
+            background: rgba(22, 43, 136, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 255, 0.1),
+                inset 0 0 20px rgba(0, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .glow-card:hover {
+            border-color: rgba(0, 255, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 40px rgba(0, 255, 255, 0.2),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .neo-brutalism {
+            background: linear-gradient(45deg, rgba(4, 11, 39, 0.9), rgba(22, 43, 136, 0.9));
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 8px 8px 0 rgba(0, 255, 255, 0.1);
+            transform: skew(-2deg);
+            transition: all 0.3s ease;
+        }
+
+        .neo-brutalism:hover {
+            transform: skew(-2deg) translateY(-5px);
+            box-shadow: 12px 12px 0 rgba(0, 255, 255, 0.2);
+        }
+
+        .cyber-text {
+            color: #fff;
+            text-shadow: 
+                0 0 5px rgba(0, 255, 255, 0.5),
+                0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--neon-blue), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .neural-border {
+            position: relative;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .neural-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--light-blue));
+            z-index: -1;
+            filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .neural-border:hover::before {
+            opacity: 1;
+        }
+
+        .network-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        .network-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            height: 1px;
+            width: 100%;
+            animation: lineScan 3s infinite;
+            opacity: 0.2;
+        }
+
+        @keyframes lineScan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        .neural-canvas {
+            background: rgba(4, 11, 39, 0.3);
+            border-radius: 1rem;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        #neuralNetwork {
+            border-radius: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-gradient min-h-screen">
+        <!-- Анимированные линии -->
+        <div class="network-lines">
+            <div class="network-line" style="animation-delay: 0s"></div>
+            <div class="network-line" style="animation-delay: 1s"></div>
+            <div class="network-line" style="animation-delay: 2s"></div>
+        </div>
+
+        <!-- Навигация -->
+        <nav class="fixed w-full z-50 bg-opacity-70 backdrop-filter backdrop-blur-xl border-b border-blue-400/10">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 relative neo-brutalism flex items-center justify-center">
+                            <span class="text-2xl gradient-text font-bold">N</span>
+                        </div>
+                        <span class="text-2xl font-bold gradient-text">NBYTE</span>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#protocol" class="text-blue-200 hover:text-cyan-400 transition-colors">Protocol</a>
+                        <a href="#technology" class="text-blue-200 hover:text-cyan-400 transition-colors">Technology</a>
+                        <a href="#economics" class="text-blue-200 hover:text-cyan-400 transition-colors">Economics</a>
+                        <button class="neural-border px-6 py-2 rounded-lg text-cyan-400 hover:text-white transition-colors">
+                            Launch App
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Главный экран -->
+        <section class="tech-grid min-h-screen flex items-center pt-20">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-8">
+                        <h1 class="text-6xl font-bold">
+                            <span class="gradient-text">Neural Network</span>
+                            <br>
+                            <span class="cyber-text">Powered DeFi</span>
+                        </h1>
+                        <p class="text-xl text-blue-200 leading-relaxed">
+                            Experience the future of decentralized finance with our 
+                            advanced AI-driven protocol and self-optimizing trading mechanics.
+                        </p>
+                        <div class="flex flex-wrap gap-6">
+                            <button class="neo-brutalism px-8 py-4 rounded-lg text-cyan-400 hover:text-white">
+                                Explore Protocol
+                            </button>
+                            <button class="neural-border px-8 py-4 rounded-lg text-blue-200 hover:text-white">
+                                Read Whitepaper
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative neural-canvas p-4">
+                        <canvas id="neuralNetwork" class="w-full aspect-square"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!-- Технологическая секция -->
+        <section id="technology" class="py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-bold text-center gradient-text mb-16">
+                    Advanced Technology
+                </h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glow-card rounded-2xl p-8">
+                        <div class="neo-brutalism w-16 h-16 flex items-center justify-center mb-6 rounded-xl">
+                            <span class="text-2xl">🧠</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 gradient-text">Neural Optimization</h3>
+                        <p class="text-blue-200">
+                            Advanced AI algorithms continuously analyze market conditions 
+                            and adjust parameters for optimal trading performance.
+                        </p>
+                    </div>
+                    <div class="glow-card rounded-2xl p-8">
+                        <div class="neo-brutalism w-16 h-16 flex items-center justify-center mb-6 rounded-xl">
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 gradient-text">Smart Liquidity</h3>
+                        <p class="text-blue-200">
+                            Dynamic liquidity management across multiple DEXes with 
+                            real-time balancing and optimization.
+                        </p>
+                    </div>
+                    <div class="glow-card rounded-2xl p-8">
+                        <div class="neo-brutalism w-16 h-16 flex items-center justify-center mb-6 rounded-xl">
+                            <span class="text-2xl">🛡️</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 gradient-text">Secure Protocol</h3>
+                        <p class="text-blue-200">
+                            Multi-layer security system with real-time monitoring 
+                            and automated risk management.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Экономическая модель -->
+        <section id="economics" class="py-24 relative">
+            <div class="container mx-auto px-6">
+                <div class="neo-brutalism p-12 rounded-2xl">
+                    <h2 class="text-4xl font-bold gradient-text mb-12">Economic Model</h2>
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <div class="glow-card p-8 rounded-xl">
+                            <h3 class="text-xl font-bold mb-6 text-cyan-400">Neural Algorithm</h3>
+                            <pre class="text-blue-200 font-mono">
+N = Σ(wi * xi + b)
+
+where:
+N = Neural Output
+wi = Weight Vector
+xi = Input Parameters
+b = Bias Factor</pre>
+                        </div>
+                        <div class="glow-card p-8 rounded-xl">
+                            <h3 class="text-xl font-bold mb-6 text-cyan-400">Price Discovery</h3>
+                            <pre class="text-blue-200 font-mono">
+P = (L * M * α) / (S * β)
+
+where:
+P = Token Price
+L = Liquidity Depth
+M = Market Factor
+S = Supply State
+α,β = Neural Coefficients</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let scene, camera, renderer, particles, connections;
+        const particlesCount = 50;
+        const particlePositions = [];
+        const particlesData = [];
+
+        function initNeuralAnimation() {
+            const canvas = document.getElementById('neuralNetwork');
+            
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+            camera.position.z = 150;
+
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas,
+                alpha: true,
+                antialias: true
+            });
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+            // Создаем частицы
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particlesCount * 3);
+            const colors = new Float32Array(particlesCount * 3);
+            const color = new THREE.Color();
+
+            for (let i = 0; i < particlesCount; i++) {
+                const x = Math.random() * 100 - 50;
+                const y = Math.random() * 100 - 50;
+                const z = Math.random() * 100 - 50;
+
+                positions[i * 3] = x;
+                positions[i * 3 + 1] = y;
+                positions[i * 3 + 2] = z;
+
+                particlePositions.push(x, y, z);
+
+                particlesData.push({
+                    velocity: new THREE.Vector3(
+                        -1 + Math.random() * 2,
+                        -1 + Math.random() * 2,
+                        -1 + Math.random() * 2
+                    ),
+                    numConnections: 0
+                });
+
+                const mixed = Math.random();
+                color.setHSL(0.55 + mixed * 0.1, 0.8, 0.6);
+
+                colors[i * 3] = color.r;
+                colors[i * 3 + 1] = color.g;
+                colors[i * 3 + 2] = color.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const particleMaterial = new THREE.PointsMaterial({
+                size: 3,
+                sizeAttenuation: true,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            particles = new THREE.Points(geometry, particleMaterial);
+            scene.add(particles);
+
+            // Создаем соединения
+            const lineGeometry = new THREE.BufferGeometry();
+            const lineMaterial = new THREE.LineBasicMaterial({
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                opacity: 0.4
+            });
+
+            connections = new THREE.LineSegments(lineGeometry, lineMaterial);
+            scene.add(connections);
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const positions = particles.geometry.attributes.position.array;
+            const linePositions = [];
+            const lineColors = [];
+            const color = new THREE.Color();
+
+            // Обновляем позиции частиц
+            for (let i = 0; i < particlesCount; i++) {
+                const data = particlesData[i];
+                
+                positions[i * 3] += data.velocity.x * 0.1;
+                positions[i * 3 + 1] += data.velocity.y * 0.1;
+                positions[i * 3 + 2] += data.velocity.z * 0.1;
+
+                if (Math.abs(positions[i * 3]) > 50) data.velocity.x *= -1;
+                if (Math.abs(positions[i * 3 + 1]) > 50) data.velocity.y *= -1;
+                if (Math.abs(positions[i * 3 + 2]) > 50) data.velocity.z *= -1;
+
+                // Создаем соединения
+                for (let j = i + 1; j < particlesCount; j++) {
+                    const dx = positions[i * 3] - positions[j * 3];
+                    const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+                    const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+                    const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+                    if (dist < 30) {
+                        linePositions.push(
+                            positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2],
+                            positions[j * 3], positions[j * 3 + 1], positions[j * 3 + 2]
+                        );
+
+                        const alpha = 1.0 - dist / 30;
+                        color.setHSL(0.55, 0.8, 0.6);
+                        lineColors.push(
+                            color.r, color.g, color.b,
+                            color.r, color.g, color.b
+                        );
+                    }
+                }
+            }
+
+            particles.geometry.attributes.position.needsUpdate = true;
+
+            connections.geometry.setAttribute(
+                'position',
+                new THREE.Float32BufferAttribute(linePositions, 3)
+            );
+            connections.geometry.setAttribute(
+                'color',
+                new THREE.Float32BufferAttribute(lineColors, 3)
+            );
+
+            particles.rotation.y += 0.001;
+            connections.rotation.y += 0.001;
+
+            renderer.render(scene, camera);
+        }
+
+        // Инициализация
+        window.addEventListener('load', initNeuralAnimation);
+
+        // Обновление размера при изменении окна
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('neuralNetwork');
+            if (canvas && renderer) {
+                const width = canvas.clientWidth;
+                const height = canvas.clientWidth; // Поддерживаем квадратную форму
+                
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                
+                renderer.setSize(width, height);
+            }
+        });
+    </script>
+</body>
+</html>
